@@ -2,8 +2,13 @@
 
 using namespace std;
 
+void print(string message) {
+    cout << message << "\n";
+}
+
 int main() {
-    cout << "Hello world\n";
+    print("hello, world");
+    print("0 and O\n1 and l\ni and l\nq and g");
     return 0;
 }
 

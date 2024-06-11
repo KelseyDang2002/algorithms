@@ -1,10 +1,13 @@
 #include <iostream>
 #include <cstdlib>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
+// Function to print array
 void print_arr(int unsorted_arr[], int arr_length, string text) {
-    cout << text << "\n";
+    cout << "\n" << text << "\n";
 
     for (int i = 0; i < arr_length; i++) {
         cout  << "\t" << unsorted_arr[i];
@@ -15,18 +18,82 @@ void print_arr(int unsorted_arr[], int arr_length, string text) {
     }
 }
 
+void swap(int *first, int *second) {
+    int temp = *first;
+    *first = *second;
+    *second = temp;
+}
+
+// Function to do Bubble Sort
 void bubble_sort(int unsorted_arr[], int arr_length, string text) {
-    // TODO
+    cout << "\n" << text << "\n";
+    
+    bool swapped;
+    for (int i = 0; i < (arr_length - 1); i++) {
+        swapped = false;
+
+        for (int j = 0; j < (arr_length - i - 1); j++) {
+            // swap if first element in pair > second element in pair
+            if (unsorted_arr[j] > unsorted_arr[j + 1]) {
+                swap(&unsorted_arr[j], &unsorted_arr[j + 1]);
+                swapped = true;
+            }
+        }
+
+        // no pairs of elements were swapped by inner for loop
+        if (swapped == false) {
+            break;
+        }
+    }
 }
 
+// Function to do Optimized Bubble Sort
+void bubble_sort_opt(int unsorted_arr[], int arr_length, string text) {
+    cout << "\n" << text << "\n";
+    
+    bool swapped = false;
+    for (int i = 1; i <= arr_length; i++) {
+        if (i == arr_length) {
+            if (!swapped) {
+                break;
+            }
+
+            swapped = false;
+            i = 1;
+        }
+
+        if (unsorted_arr[i - 1] > unsorted_arr[i]) {
+            swap(&unsorted_arr[i - 1], &unsorted_arr[i]);
+            swapped = true;
+        }
+    }
+}
+
+// Function to do Selection Sort
 void selection_sort(int unsorted_arr[], int arr_length, string text) {
-    // TODO
+    cout << "\n" << text << "\n";
+
+    for (int i = 0; i < arr_length - 1; i++) {
+        int min_value = i;
+
+        for (int j = i + 1; j < arr_length; j++) {
+            if (unsorted_arr[j] < unsorted_arr[min_value]) {
+                min_value = j;
+            }
+        }
+
+        if (min_value != i) {
+            swap(&unsorted_arr[min_value], &unsorted_arr[i]);
+        }
+    }
 }
 
+// Function to do Merge Sort TODO
 void merge_sort(int unsorted_arr[], int arr_length, string text) {
-    // TODO
+    cout << "\n" << text << "\n";
 }
 
+// Main
 int main() {
     int unsorted_arr[] = {
         47, 69, 51, 37, 1, 17, 28, 98, 34, 20,
@@ -42,8 +109,21 @@ int main() {
     };
     
     int arr_length = sizeof(unsorted_arr) / sizeof(unsorted_arr[0]);
+    cout << arr_length << "\n";
 
-    print_arr(unsorted_arr, arr_length, "\nUnsorted Array:");
+    print_arr(unsorted_arr, arr_length, "Unsorted Array:");
+
+    auto start = high_resolution_clock::now();
+
+    // bubble_sort(unsorted_arr, arr_length, "Bubble Sort");
+    // bubble_sort_opt(unsorted_arr, arr_length, "Optimized Bubble Sort");
+    selection_sort(unsorted_arr, arr_length, "Selection Sort");
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << duration.count() << " microseconds\n";
+
+    print_arr(unsorted_arr, arr_length, "Sorted Array:");
 
     return 0;
 }

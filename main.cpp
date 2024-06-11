@@ -3,10 +3,6 @@
 
 using namespace std;
 
-void print(string message) {
-    cout << message << "\n";
-}
-
 void print_arr(int unsorted_arr[], int arr_length, string text) {
     cout << text << "\n";
 

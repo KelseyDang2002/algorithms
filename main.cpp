@@ -2,14 +2,14 @@
 #include <cstdlib>
 #include <chrono>
 
-const int ARR_SIZE = 5000; // size of array
+const int ARR_SIZE = 1000; // size of array
 
 // Function to generate array 
 void generate_arr(int array[], int size) {
     srand(time(0)); // seed
 
     for (int i = 0; i < size; i++) {
-        array[i] = (rand() % 1001); // random integer between 0 and 1000
+        array[i] = (rand() % (10000 + 1)); // random integer between 0 and 1000
     }
 }
 
@@ -145,12 +145,24 @@ void merge_sort_recursion(int array[], int left, int right) {
 void merge_sort(int array[], int size, std::string text) {
     std::cout << "\n" << text << "\n";
 
-    merge_sort_recursion(array, 0, ARR_SIZE - 1);
+    merge_sort_recursion(array, 0, size - 1);
 }
 
-// Function to do Quick Sort TODO
+// TODO
+int partition(int array[], int low, int high);
+
+// TODO
+void quick_sort_recursion(int array[], int low, int high) {
+    if (low < high) {
+        int pivot_index;
+    }
+}
+
+// Function to do Quick Sort
 void quick_sort(int array[], int size, std::string text) {
     std::cout << "\n" << text << "\n";
+
+    quick_sort_recursion(array, 0, size - 1);
 }
 
 // Main

@@ -9,7 +9,7 @@ void generate_arr(int array[], int size) {
     srand(time(0)); // seed
 
     for (int i = 0; i < size; i++) {
-        array[i] = (rand() % (10000 + 1)); // random integer between 0 and 1000
+        array[i] = (rand() % (10000 + 1)); // random integer between 0 and 10000
     }
 }
 
@@ -19,7 +19,7 @@ void print_arr(int array[], int size, std::string text) {
     std::cout << "------------------------------------------------------------------------------------\n";
 
     for (int i = 0; i < size; i++) {
-        std::cout  << "\t" << array[i];
+        std::cout << "\t" << array[i];
 
         if ((i + 1) % 10 == 0) {
             std::cout << "\n";
@@ -27,10 +27,10 @@ void print_arr(int array[], int size, std::string text) {
     }
 }
 
-void swap(int *first, int *second) {
-    int temp = *first;
-    *first = *second;
-    *second = temp;
+void swap(int *x, int *y) {
+    int temp = *x;
+    *x = *y;
+    *y = temp;
 }
 
 // Function to do Bubble Sort
@@ -42,7 +42,7 @@ void bubble_sort(int array[], int size, std::string text) {
         swapped = false;
 
         for (int j = 0; j < (size - i - 1); j++) {
-            // swap if first element in pair > second element in pair
+            // swap if low element in pair > second element in pair
             if (array[j] > array[j + 1]) {
                 swap(&array[j], &array[j + 1]);
                 swapped = true;
@@ -128,7 +128,7 @@ void merge_sorted_subarrays(int array[], int left, int mid, int right) {
     }
 }
 
-// Args: array, leftmost index, rightmost index
+// Function to do Merge Sort Recursion
 void merge_sort_recursion(int array[], int left, int right) {
     if (left < right) {
         int mid = left + (right - left) / 2;
@@ -148,13 +148,38 @@ void merge_sort(int array[], int size, std::string text) {
     merge_sort_recursion(array, 0, size - 1);
 }
 
-// TODO
-int partition(int array[], int low, int high);
+// Function that separates values less than and greater than the pivot in Quick Sort
+int partition(int array[], int low, int high) {
+    // prevent always picking high pivot by swapping high with a random pivot between low and high
+    int pivot_index = low + (rand() % (high - low));
+    
+    if (pivot_index != high) {
+        swap(&array[pivot_index], &array[high]);
+    }
 
-// TODO
+    int pivot = array[high];
+    
+    int i = low;
+
+    for (int j = low; j < high; j++) {
+        if (array[j] <= pivot) {
+            swap(&array[i], &array[j]);
+            i++;
+        }
+    }
+
+    swap(&array[i], &array[high]);
+
+    return i;
+}
+
+// Function to do Quick Sort Recursion
 void quick_sort_recursion(int array[], int low, int high) {
     if (low < high) {
-        int pivot_index;
+        int pivot_index = partition(array, low, high);
+
+        quick_sort_recursion(array, low, pivot_index - 1);
+        quick_sort_recursion(array, pivot_index + 1, high);
     }
 }
 
@@ -162,36 +187,37 @@ void quick_sort_recursion(int array[], int low, int high) {
 void quick_sort(int array[], int size, std::string text) {
     std::cout << "\n" << text << "\n";
 
+    srand(time(NULL));
     quick_sort_recursion(array, 0, size - 1);
 }
 
 // Main
 int main() {
-    // int array[ARR_SIZE]; // array
-    // int array2[ARR_SIZE];
-    // int array3[ARR_SIZE];
+    int array[ARR_SIZE]; // array
+    int array2[ARR_SIZE];
+    int array3[ARR_SIZE];
     int array4[ARR_SIZE];
-    // int array5[ARR_SIZE];
+    int array5[ARR_SIZE];
 
     // generate_arr(array, ARR_SIZE);
     // generate_arr(array2, ARR_SIZE);
     // generate_arr(array3, ARR_SIZE);
-    generate_arr(array4, ARR_SIZE);
-    // generate_arr(array5, ARR_SIZE);
+    // generate_arr(array4, ARR_SIZE);
+    generate_arr(array5, ARR_SIZE);
 
     // print_arr(array, ARR_SIZE, "Unsorted Array:");
     // print_arr(array2, ARR_SIZE, "Unsorted Array2:");
     // print_arr(array3, ARR_SIZE, "Unsorted Array3:");
-    print_arr(array4, ARR_SIZE, "Unsorted Array4:");
-    // print_arr(array5, ARR_SIZE, "Unsorted Array5:");
+    // print_arr(array4, ARR_SIZE, "Unsorted Array4:");
+    print_arr(array5, ARR_SIZE, "Unsorted Array5:");
 
     auto start = std::chrono::high_resolution_clock::now(); // time start
 
     // bubble_sort(array, ARR_SIZE, "Bubble Sort");
     // bubble_sort_opt(array2, ARR_SIZE, "Optimized Bubble Sort");
     // selection_sort(array3, ARR_SIZE, "Selection Sort");
-    merge_sort(array4, ARR_SIZE, "Merge Sort");
-    // quick_sort(array5, ARR_SIZE, "Quick Sort");
+    // merge_sort(array4, ARR_SIZE, "Merge Sort");
+    quick_sort(array5, ARR_SIZE, "Quick Sort");
 
     auto stop = std::chrono::high_resolution_clock::now(); // time stop
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start); // time
@@ -200,8 +226,8 @@ int main() {
     // print_arr(array, ARR_SIZE, "Sorted Array:");
     // print_arr(array2, ARR_SIZE, "Sorted Array2:");
     // print_arr(array3, ARR_SIZE, "Sorted Array3:");
-    print_arr(array4, ARR_SIZE, "Sorted Array4:");
-    // print_arr(array5, ARR_SIZE, "Sorted Array5:");
+    // print_arr(array4, ARR_SIZE, "Sorted Array4:");
+    print_arr(array5, ARR_SIZE, "Sorted Array5:");
 
     return 0;
 }

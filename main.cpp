@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstdlib>
-#include <functional>
 #include <chrono>
 
 const int ARR_SIZE = 5000; // size of array
@@ -20,10 +19,10 @@ class Array {
 
 // Function to generate array 
 void Array::generate_arr() {
-    srand(time(0)); // seed
+    srand(time(NULL)); // seed
 
     for (int i = 0; i < ARR_SIZE; i++) {
-        array[i] = (rand() % (100000 + 1)); // random integer between 0 and 100000
+        array[i] = (rand() % (10000 + 1)); // random integer between 0 and 10000
     }
 }
 
@@ -209,16 +208,20 @@ void Array::quick_sort() {
 int main() {
     Array array1, array2, array3, array4, array5;
 
-    array1.generate_arr();
-    array2.generate_arr();
-    array3.generate_arr();
-    array4.generate_arr();
-    array5.generate_arr();
+    array1.generate_arr(); // generate random array with size ARR_SIZE
+    // array2.generate_arr();
+    // array3.generate_arr();
+    // array4.generate_arr();
+    // array5.generate_arr();
     
     array1.print_arr("Unsorted Array:");
 
     auto start = std::chrono::high_resolution_clock::now(); // time start
-    array1.bubble_sort();
+    // array1.bubble_sort();
+    // array1.bubble_sort_opt();
+    // array1.selection_sort();
+    array1.merge_sort();
+    // array1.quick_sort();
     auto stop = std::chrono::high_resolution_clock::now(); // time stop
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start); // time
     std::cout << "Execution time: " << duration.count() << " microseconds\n"; // print time

@@ -90,6 +90,96 @@ void Queue::removeFront() {
     q.pop();
 }
 
+class Set {
+    public:
+        std::set <int> id;
+
+        void print();
+        void setInsert(int value);
+        void setErase(int value);
+        void setContains(int value);
+        void setSize();
+};
+
+void Set::print() {
+    std::cout << "Set: ";
+    for (auto i = id.begin(); i != id.end(); i++) {
+        std::cout << *i << " ";
+    }
+    std::cout << "\n\n";
+}
+
+void Set::setInsert(int value) {
+    std::cout << "Insert " << value << "\n";
+    id.insert(value);
+}
+
+void Set::setErase(int value) {
+    std::cout << "Erase " << value << "\n"; 
+    id.erase(value);
+}
+
+void Set::setContains(int value) {
+    if (id.count(value)) {
+        std::cout << "Contains " << value << "\n";
+    }
+    else {
+        std::cout << value << " does not exist\n";
+    }
+}
+
+void Set::setSize() {
+    std::cout << "Set size = " << id.size() << "\n";
+}
+
+class Map {
+    public:
+        std::map <std::string, int> country_codes;
+
+        void print();
+        void mapInsert(std::string country, int code);
+        void mapErase(std::string country);
+        void mapEdit(std::string country, int code);
+        void mapContains(std::string country);
+        void mapSize();
+};
+
+void Map::print() {
+    std::cout << "Map: ";
+    for (auto it: country_codes) {
+        std::cout << "\t" << it.first << " -> " << it.second << "\n";
+    }
+    std::cout << "\n";
+}
+
+void Map::mapInsert(std::string country, int code) {
+    country_codes.insert({country, code});
+    std::cout << "Insert " << country << " " << code << "\n";
+}
+
+void Map::mapErase(std::string country) {
+    country_codes.erase(country);
+    std::cout << "Erase " << country << "\n";
+}
+
+void Map::mapEdit(std::string country, int code) {
+    country_codes[country] = code;
+    std::cout << "Change " << country << " code to " << code << "\n";
+}
+
+void Map::mapContains(std::string country) {
+    if (country_codes.count(country)) {
+        std::cout << "Contains " << country << "\n";
+    }
+    else {
+        std::cout << country << " does not exist\n";
+    }
+}
+
+void Map::mapSize() {
+    std::cout << "Map size = " << country_codes.size() << "\n";
+}
+
 int main() {
     Vector vector;
 
@@ -126,6 +216,32 @@ int main() {
     queue.addToFront(104);
     queue.addToFront(105);
     queue.printAndEmpty();
+
+    Set set;
+
+    set.setInsert(4060);
+    set.setInsert(4070);
+    set.setInsert(4080);
+    set.setInsert(4090);
+    set.setInsert(4060);
+    set.setErase(4080);
+    set.setContains(4070);
+    set.setContains(4080);
+    set.setSize();
+    set.print();
+
+    Map map;
+
+    map.mapInsert("United States", 840);
+    map.mapInsert("Japan", 392);
+    map.mapInsert("Korea", 410);
+    map.mapInsert("Sweden", 752);
+    map.mapErase("Sweden");
+    map.mapEdit("Korea", 408);
+    map.mapContains("Sweden");
+    map.mapInsert("Russia", 643);
+    map.mapSize();
+    map.print();
     
     return 0;
 }

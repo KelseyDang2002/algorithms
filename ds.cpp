@@ -193,33 +193,33 @@ struct SLLNode {
 
 SLLNode* head;
 
-void insertSLL(int value) {
+void insertSLL(SLLNode** ptrToHead, int value) {
     SLLNode* temp = (SLLNode*)malloc(sizeof(struct SLLNode));
     temp->data = value;
-    temp->next = head;
-    head = temp;
+    temp->next = NULL;
+    if (*ptrToHead != NULL) temp->next = *ptrToHead;
+    *ptrToHead = temp;
 }
 
-void printSLL() {
-    SLLNode* temp = head;
+void printSLL(SLLNode* head) {
     std::cout << "SLL: ";
-    while(temp != NULL) {
-        std::cout << temp->data << " ";
-        temp = temp->next;
+    while(head != NULL) {
+        std::cout << head->data << " ";
+        head = head->next;
     }
     std::cout << "\n";
 }
 
 void prompt() {
-    head = NULL; // empty list
+    SLLNode* head = NULL; // empty list
     std::cout << "How many numbers? ";
     int n, value;
     std::cin >> n;
     for (int i = 0; i < n; i++) {
         std::cout << "Enter number: ";
         std::cin >> value;
-        insertSLL(value);
-        printSLL();
+        insertSLL(&head, value);
+        printSLL(head);
     }
 }
 

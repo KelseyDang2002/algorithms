@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 #include <stack>
 #include <queue>
@@ -139,6 +140,7 @@ class Map {
         void print();
         void mapInsert(std::string country, int code);
         void mapErase(std::string country);
+        void mapAccess(std::string country);
         void mapEdit(std::string country, int code);
         void mapContains(std::string country);
         void mapSize();
@@ -162,6 +164,10 @@ void Map::mapErase(std::string country) {
     std::cout << "Erase " << country << "\n";
 }
 
+void Map::mapAccess(std::string country) {
+    std::cout << country << " code = " << country_codes[country] << "\n";
+}
+
 void Map::mapEdit(std::string country, int code) {
     country_codes[country] = code;
     std::cout << "Change " << country << " code to " << code << "\n";
@@ -179,6 +185,49 @@ void Map::mapContains(std::string country) {
 void Map::mapSize() {
     std::cout << "Map size = " << country_codes.size() << "\n";
 }
+
+struct SLLNode {
+    int data;
+    struct SLLNode* next;
+};
+
+SLLNode* head;
+
+void insertSLL(int value) {
+    SLLNode* temp = (SLLNode*)malloc(sizeof(struct SLLNode));
+    temp->data = value;
+    temp->next = head;
+    head = temp;
+}
+
+void printSLL() {
+    SLLNode* temp = head;
+    std::cout << "SLL: ";
+    while(temp != NULL) {
+        std::cout << temp->data << " ";
+        temp = temp->next;
+    }
+    std::cout << "\n";
+}
+
+void prompt() {
+    head = NULL; // empty list
+    std::cout << "How many numbers? ";
+    int n, value;
+    std::cin >> n;
+    for (int i = 0; i < n; i++) {
+        std::cout << "Enter number: ";
+        std::cin >> value;
+        insertSLL(value);
+        printSLL();
+    }
+}
+
+// struct DLLNode {
+//     int data;
+//     struct DLLNode* prev;
+//     struct DLLNode* next;
+// };
 
 int main() {
     Vector vector;
@@ -240,8 +289,11 @@ int main() {
     map.mapEdit("Korea", 408);
     map.mapContains("Sweden");
     map.mapInsert("Russia", 643);
+    map.mapAccess("Japan");
     map.mapSize();
     map.print();
+
+    prompt();
     
     return 0;
 }

@@ -13,6 +13,7 @@ class Array {
         void bubble_sort();
         void bubble_sort_opt();
         void selection_sort();
+        void insertion_sort();
         void merge_sort();
         void quick_sort();
 };
@@ -47,6 +48,12 @@ void swap(int *x, int *y) {
 }
 
 // Function to do Bubble Sort
+/*
+Best Case: O(n)
+Worst Case: O(n^2)
+
+Space Complexity: O(1)
+*/
 void Array::bubble_sort() {
     std::cout << "\nBubble Sort\n";
     
@@ -92,6 +99,12 @@ void Array::bubble_sort_opt() {
 }
 
 // Function to do Selection Sort
+/*
+Best Case: O(n^2)
+Worst Case: O(n^2)
+
+Space Complexity: O(1)
+*/
 void Array::selection_sort() {
     std::cout << "\nSelection Sort\n";
 
@@ -107,6 +120,32 @@ void Array::selection_sort() {
         if (min_value != i) {
             swap(&array[min_value], &array[i]);
         }
+    }
+}
+
+// Function to do Insertion Sort
+/*
+Best Case: O(n) when already sorted
+Worst Case: O(n^2) when not sorted
+
+Space Complexity: O(1)
+
+Used for when arrays are already sorted or small
+*/
+void Array::insertion_sort() {
+    std::cout << "\nInsertion Sort\n";
+
+    for (int i = 1; i < ARR_SIZE; i++) { // start at index 1 bc 0 is already 'sorted'
+        int key = array[i];
+        int j = i - 1;
+
+        // shift element in correct position
+        while (j >= 0 && array[j] > key) {
+            array[j + 1] = array[j];
+            j = j - 1;
+        }
+
+        array[j + 1] = key;
     }
 }
 
@@ -155,6 +194,14 @@ void merge_sort_recursion(int array[], int left, int right) {
 }
 
 // Function to do Merge Sort
+/*
+Best Case: O(n log(n))
+Worst Case: O(n log(n))
+
+Space Complexity: O(n)
+
+Used for larger and less sorted arrays
+*/
 void Array::merge_sort() {
     std::cout << "\nMerge Sort\n";
 
@@ -197,6 +244,15 @@ void quick_sort_recursion(int array[], int low, int high) {
 }
 
 // Function to do Quick Sort
+/*
+Best Case: O(n log(n))
+Worst Case: O(n^2)
+Average Case: faster than insertion and merge
+
+Space Complexity: O(log(n))
+
+Fast on average but relies on being optimized
+*/
 void Array::quick_sort() {
     std::cout << "\nQuick Sort\n";
 
@@ -206,49 +262,24 @@ void Array::quick_sort() {
 
 // Main
 int main() {
-    Array array1, array2, array3, array4, array5;
+    Array array1;
 
     array1.generate_arr(); // generate random array with size ARR_SIZE
-    // array2.generate_arr();
-    // array3.generate_arr();
-    // array4.generate_arr();
-    // array5.generate_arr();
     
     array1.print_arr("Unsorted Array:");
 
     auto start = std::chrono::high_resolution_clock::now(); // time start
+
     // array1.bubble_sort();
     // array1.bubble_sort_opt();
     // array1.selection_sort();
-    array1.merge_sort();
-    // array1.quick_sort();
+    // array1.insertion_sort();
+    // array1.merge_sort();
+    array1.quick_sort();
+
     auto stop = std::chrono::high_resolution_clock::now(); // time stop
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start); // time
     std::cout << "Execution time: " << duration.count() << " microseconds\n"; // print time
-
-    // auto start2 = std::chrono::high_resolution_clock::now(); // time start
-    // array2.bubble_sort_opt();
-    // auto stop2 = std::chrono::high_resolution_clock::now(); // time stop
-    // auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(stop2 - start2); // time
-    // std::cout << "Execution time: " << duration2.count() << " microseconds\n"; // print time
-
-    // auto start3 = std::chrono::high_resolution_clock::now(); // time start
-    // array3.selection_sort();
-    // auto stop3 = std::chrono::high_resolution_clock::now(); // time stop
-    // auto duration3 = std::chrono::duration_cast<std::chrono::microseconds>(stop3 - start3); // time
-    // std::cout << "Execution time: " << duration3.count() << " microseconds\n"; // print time
-
-    // auto start4 = std::chrono::high_resolution_clock::now(); // time start
-    // array4.merge_sort();
-    // auto stop4 = std::chrono::high_resolution_clock::now(); // time stop
-    // auto duration4 = std::chrono::duration_cast<std::chrono::microseconds>(stop4 - start4); // time
-    // std::cout << "Execution time: " << duration3.count() << " microseconds\n"; // print time
-
-    // auto start5 = std::chrono::high_resolution_clock::now(); // time start
-    // array5.quick_sort();
-    // auto stop5 = std::chrono::high_resolution_clock::now(); // time stop
-    // auto duration5 = std::chrono::duration_cast<std::chrono::microseconds>(stop5 - start5); // time
-    // std::cout << "Execution time: " << duration5.count() << " microseconds\n"; // print time
     
     array1.print_arr("Sorted Array:");
 

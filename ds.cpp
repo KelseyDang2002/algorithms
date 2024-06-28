@@ -149,7 +149,7 @@ class Map {
 void Map::print() {
     std::cout << "Map: ";
     for (auto it: country_codes) {
-        std::cout << "\t" << it.first << " -> " << it.second << "\n";
+        std::cout << "\t" << it.first << ", " << it.second << "\n";
     }
     std::cout << "\n";
 }
@@ -188,46 +188,152 @@ void Map::mapSize() {
 
 struct SLLNode {
     int data;
-    struct SLLNode* next;
+    SLLNode* next;
 };
 
-SLLNode* head;
-
-void insertSLL(SLLNode** ptrToHead, int value) {
-    SLLNode* temp = (SLLNode*)malloc(sizeof(struct SLLNode));
+void headInsertSLL(SLLNode** ptrToHead, int value) {
+    // SLLNode* temp = (SLLNode*)malloc(sizeof(struct SLLNode)); // C
+    SLLNode* temp = new SLLNode(); // C++
     temp->data = value;
     temp->next = NULL;
+    
     if (*ptrToHead != NULL) temp->next = *ptrToHead;
     *ptrToHead = temp;
 }
 
+void positionInsertSLL(SLLNode** ptrToHead, int value, int position) {
+    SLLNode* temp1 = new SLLNode();
+    temp1->data = value;
+    temp1->next = NULL;
+
+    if (position == 1) {
+        temp1->next = *ptrToHead;
+        *ptrToHead = temp1;
+        return;
+    }
+
+    SLLNode* temp2 = *ptrToHead;
+    for (int i = 0; i < position - 2; i++) {
+        temp2 = temp2->next;
+    }
+
+    temp1->next = temp2->next;
+    temp2->next = temp1;
+}
+
+void positionDeleteSLL(SLLNode** ptrToHead, int position) {
+    SLLNode* temp1 = *ptrToHead;
+
+    if (position == 1) {
+        *ptrToHead = temp1->next; // head now points to second node
+        // free(temp1); // C
+        delete temp1; // C++
+        return;
+    }
+
+    for (int i = 0; i < position - 2; i++)
+        temp1 = temp1->next; // temp1 points to (n-1)th Node
+    
+    SLLNode* temp2 = temp1->next; // nth Node
+    temp1->next = temp2->next; // (n+1)th Node
+    delete temp2;
+}
+
 void printSLL(SLLNode* head) {
     std::cout << "SLL: ";
+
     while(head != NULL) {
-        std::cout << head->data << " ";
+        std::cout << head->data << " -> ";
         head = head->next;
     }
-    std::cout << "\n";
+
+    std::cout << "NULL\n";
 }
 
-void prompt() {
+void callSLL() {
     SLLNode* head = NULL; // empty list
-    std::cout << "How many numbers? ";
-    int n, value;
-    std::cin >> n;
-    for (int i = 0; i < n; i++) {
-        std::cout << "Enter number: ";
-        std::cin >> value;
-        insertSLL(&head, value);
-        printSLL(head);
-    }
+    positionInsertSLL(&head, 2, 1); // 2
+    positionInsertSLL(&head, 3, 2); // 2, 3
+    positionInsertSLL(&head, 4, 1); // 4, 2, 3
+    positionInsertSLL(&head, 5, 2); // 4, 5, 2, 3
+    headInsertSLL(&head, 7); // 7, 4, 5, 2, 3
+    positionDeleteSLL(&head, 3); // 7, 4, 2, 3
+    printSLL(head);
 }
 
-// struct DLLNode {
-//     int data;
-//     struct DLLNode* prev;
-//     struct DLLNode* next;
-// };
+struct DLLNode {
+    int data;
+    DLLNode* prev;
+    DLLNode* next;
+};
+
+DLLNode* head;
+
+DLLNode* getNewNode(int value) {
+    DLLNode* newNode = new DLLNode();
+    newNode->data = value;
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void headInsertDLL(int value) {
+    DLLNode* newNode = getNewNode(value);
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+
+    head->prev = newNode;
+    newNode->next = head;
+    head = newNode;
+}
+
+void tailInsertDLL() {}
+
+void reversePrintDLL() {
+    DLLNode* temp = head;
+    if (temp == NULL) return; // empty list, exit
+
+    // going to last node
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    // traversing backward using prev pointer
+    std::cout << "DLL Reversed: NULL <-> ";
+    while (temp != NULL) {
+        std::cout << temp->data << " <-> ";
+        temp = temp->prev;
+    }
+
+    std::cout << "NULL\n";
+}
+
+void printDLL() {
+    DLLNode* temp = head;
+    std::cout << "DLL: NULL <-> ";
+
+    while (temp != NULL) {
+        std::cout << temp->data << " <-> ";
+        temp = temp->next;
+    }
+
+    std::cout << "NULL\n";
+}
+
+void callDLL() {
+    head = NULL;
+    headInsertDLL(2);
+    printDLL();
+    reversePrintDLL();
+    headInsertDLL(4);
+    printDLL();
+    reversePrintDLL();
+    headInsertDLL(6);
+    printDLL();
+    reversePrintDLL();
+}
 
 int main() {
     Vector vector;
@@ -293,7 +399,9 @@ int main() {
     map.mapSize();
     map.print();
 
-    prompt();
+    callSLL();
+    
+    callDLL();
     
     return 0;
 }
